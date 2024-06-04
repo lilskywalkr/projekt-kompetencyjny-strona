@@ -31,8 +31,9 @@ export const useUserStore = defineStore('user', () => {
       const text = await response.text();
       const json = JSON.parse(text);
 
-      userLoggedIn.value = true;
+      userLoggedIn.value = JSON.stringify(true);
       userHash.value = hash;
+      console.log(json);
       
       userBorrowedBooks.value.setItem('borrowedBooks', JSON.stringify(json));
     } catch (error) {
@@ -159,7 +160,7 @@ export const useUserStore = defineStore('user', () => {
           const text = await response.text();
           const jsonData = JSON.parse(text);
           
-          console.log(jsonData);
+          // console.log(jsonData);
           return jsonData;
       } else {
         throw new Error('Failed to fetch the books');

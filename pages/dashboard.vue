@@ -266,7 +266,7 @@
                             font-weight: 600;
 
                             @media screen and (max-width: 768px){
-                                font-size: 2.5vw;
+                                font-size: 1.3em;
                             }
                         }
 
@@ -275,7 +275,7 @@
                             font-weight: 400;
 
                             @media screen and (max-width: 768px){
-                                font-size: 1.5vw;
+                                font-size: 0.8em;
                             }
                         }
 
@@ -285,7 +285,7 @@
                             padding: 2em;
 
                             @media screen and (max-width: 768px){
-                                font-size: 1.3vw;
+                                font-size: 0.5em;
                             }
                         }
 
