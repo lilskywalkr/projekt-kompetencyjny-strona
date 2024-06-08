@@ -6,6 +6,8 @@
         middleware: ['auth']    
     });
 
+    const showUserInformation = ref(false); // Variable to show user information
+
     const useUser = useUserStore(); // Importing the useUserStore function from the store
 
     const message = ref('Loading...');  // This will be used to display message when fetching books
@@ -26,6 +28,10 @@
         userPanel.value.classList.toggle('inactive-panel');
         panelButton.value.classList.toggle('inactive-panel');
         panelButton.value.innerText = panelButton.value.innerText === '←' ? '→' : '←';
+    }
+
+    const toggleUserInfo = () => {
+        showUserInformation.value = !showUserInformation.value;
     }
 
     // Function for filtering books based on title/author and genre
@@ -114,6 +120,8 @@
 
 <template>
     <main>
+        <UserInfo v-if="showUserInformation" @close="toggleUserInfo" />
+
         <div class="search-panel">
             <form action="">
                 <input placeholder="Title or author" v-model="searchValue" type="search" name="book-search" id="book-search">
@@ -147,7 +155,7 @@
         </div>
 
         <div class="user-panel" ref="userPanel">
-            <div class="user-info">
+            <div class="user-info" @click="toggleUserInfo">
                 <img :src="`${useRequestURL().origin}//public/webp/male_avatar.webp`" alt="user avatar">
                 <p>Ignacio Varga</p>
             </div>
@@ -160,6 +168,7 @@
                         <div>
                             <h3 class="book-title">{{ book?.title }}</h3>
                             <p class="book-author" v-for="author in book?.authors">{{ author }}</p>
+                            <p :style="{color: '#B23B3B'}"><b>{{ book?.dateDue }}</b></p>
                             <input class="book-read" type="button" value="Read" @click="async () => {readTheBook(book?.itemId)}">
                         </div>
                     </div>
@@ -346,6 +355,7 @@
                 gap: 0.5em;
                 padding-left: 1vw;
                 cursor: pointer;
+                user-select: none;
 
                 &:hover {
                     background: var(--b-gray);

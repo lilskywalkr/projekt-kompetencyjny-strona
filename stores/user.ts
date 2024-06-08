@@ -144,6 +144,10 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  async function getUserInfo() { 
+
+  }
+
   // This gets all the available books
   async function getAllAvailableBooks() {
     try {

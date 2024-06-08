@@ -3,7 +3,9 @@
 </script>
 
 <template>
-    <div></div>
+    <div>
+        <UserInfo userName="Jan Kowalski" userEmail="jan.kowalski@mail.com" userPassword="zaq1@WSX" />
+    </div>
 </template>
 
 <style>

@@ -15,8 +15,9 @@
     // Function to login the user
     async function login(e) {
         e.preventDefault();
-
-        await useUser.userLoginAction(password.value);
+        
+        const hashedPassword = await hashing(email.value + password.value);
+        await useUser.userLoginAction(hashedPassword);
 
         // If the user is logged in, redirect to the dashboard
         if (useUser.userLoggedIn) {

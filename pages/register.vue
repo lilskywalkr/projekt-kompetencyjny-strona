@@ -18,7 +18,8 @@
     async function register(e) {
         e.preventDefault();
 
-        await useUser.userRegisterAction(firstName.value, lastName.value, email.value, password.value);
+        const hashedPassword = await hashing(email.value + password.value);
+        await useUser.userRegisterAction(firstName.value, lastName.value, email.value, hashedPassword);
     }
 
     onMounted(async () => {

@@ -15,6 +15,7 @@ export default defineNuxtConfig({
             '^/api/books': '/apexrest/Item__c/getItems',
             '^/api/borrow': '/apexrest/Item__c/borrow',
             '^/api/pdf': '/apexrest/Item__c/getPDF',
+            '^/api/info': '/apexrest/Client__c/getClient'
           },
           pathFilter: [
             '/api/auth',
@@ -23,6 +24,7 @@ export default defineNuxtConfig({
             '/api/books',
             '/api/borrow',
             '/api/pdf',
+            '/api/info',
           ]
         },
     ],

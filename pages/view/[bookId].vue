@@ -1,6 +1,5 @@
 <script setup>
     import { ref, onMounted } from 'vue'
-    import WebViewer from '../components/WebViewer.vue';
 
     const route = useRoute();
 
