@@ -17,7 +17,7 @@
         e.preventDefault();
         
         const hashedPassword = await hashing(email.value + password.value);
-        await useUser.userLoginAction(hashedPassword);
+        await useUser.userLoginAction(hashedPassword, email.value);
 
         // If the user is logged in, redirect to the dashboard
         if (useUser.userLoggedIn) {

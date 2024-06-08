@@ -157,7 +157,7 @@
         <div class="user-panel" ref="userPanel">
             <div class="user-info" @click="toggleUserInfo">
                 <img :src="`${useRequestURL().origin}//public/webp/male_avatar.webp`" alt="user avatar">
-                <p>Ignacio Varga</p>
+                <p>{{ useUser.getUserEmail() }}</p>
             </div>
 
             <button ref="panelButton" @click="toggleUserPanel">&rarr;</button>
@@ -362,7 +362,16 @@
                 }
 
                 img {
-                    width: 3em;
+                    width: 2em;
+                }
+
+                p {
+                    font-size: 0.9em;
+                    font-weight: 300;
+
+                    @media screen and (max-width: 768px) {
+                        font-size: 0.75em;
+                    }
                 }
             }
 

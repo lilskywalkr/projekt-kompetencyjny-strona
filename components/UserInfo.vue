@@ -3,12 +3,10 @@
     
     // Importing the useUserStore function from the store
     const useUser = useUserStore();
-
-    // Define props for user information
-    const props = defineProps(['userName', 'userEmail', 'userPassword']);
-    const emits = defineEmits(['close']);
-
+    const emits = defineEmits(['close']);   // Define emits for closing the modal
     const visiblePassword = ref(false); // Variable to show the password
+
+    const userInfo = ref(null); // Variable to store the user info
 
     // Function to show the password
     const showPassword = () => {
@@ -17,7 +15,7 @@
 
 
     onMounted(async () => {
-       
+        userInfo.value = await useUser.getUserInfo();   // Get the user info
     });
 </script>
 
@@ -26,20 +24,17 @@
         <div class="content">
             <Icon @click="$emit('close')" class="close" name="ic:baseline-close" />
 
-            <div class="block">
+            <div class="block" v-if="userInfo">
                 <label>Name:</label>
-                <input type="text" name="userName" id="userName" :value="userName" disabled>
+                <input type="text" name="userName" id="userName" :value="`${userInfo?.First_Name__c} ${userInfo?.Last_Name__c}`" disabled>
             </div>
 
-            <div class="block">
+            <div class="block" v-if="userInfo">
                 <label>Email:</label>
-                <input type="email" name="userEmail" id="userEmail" :value="userEmail" disabled>
+                <input type="email" name="userEmail" id="userEmail" :value="userInfo?.Email__c" disabled>
             </div>
 
-            <div class="block">
-                <label>Password:</label>
-                <input :type="visiblePassword ? 'text' : 'password'" name="userPassword" id="userPassword" :value="userPassword" readonly @click="showPassword">
-            </div>
+            <h4 v-if="!userInfo">Loading...</h4>
         </div>
     </div>
 </template>

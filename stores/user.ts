@@ -2,8 +2,9 @@ import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', () => {
 
-  const userHash = useCookie('HASH'); // This is the user hash
+  const userHash = useCookie('HASH', {maxAge: 7200}); // This is the user hash
   const userLoggedIn = useCookie('IS_LOGGED_IN');  // This is the user logged in status
+  const userEmail = useCookie('EMAIL');  // This is the user email
   const accessToken = useCookie('TOKEN')  // This is the access token
   const userBorrowedBooks = ref(localStorage);  // This is the user borrowed books
 
@@ -14,7 +15,7 @@ export const useUserStore = defineStore('user', () => {
   const setUserHash = (hash: string) => { userHash.value = hash; }
 
   // This is the user login action
-  const userLoginAction = async (hash: string) => {
+  const userLoginAction = async (hash: string, email: string) => {
     try {
       const response: Response = await $fetch('/api/login', {
         method: 'POST',
@@ -33,6 +34,8 @@ export const useUserStore = defineStore('user', () => {
 
       userLoggedIn.value = JSON.stringify(true);
       userHash.value = hash;
+      userEmail.value = email;
+
       console.log(json);
       
       userBorrowedBooks.value.setItem('borrowedBooks', JSON.stringify(json));
@@ -144,8 +147,31 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  async function getUserInfo() { 
-
+  async function getUserInfo() {
+    try {
+      const response: Response = await $fetch('/api/info', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken.value}`,
+        },
+        body: JSON.stringify({
+          email: String(userEmail.value),
+        }),
+        server: true,
+      });
+  
+      if (response) {
+        const text = await response.text();
+        const jsonData = JSON.parse(text);
+  
+        return jsonData;
+      } else {
+        throw new Error('Failed to fetch the user info');
+      }
+    } catch (error) {
+      console.error("An error occured: ", error);
+    }
   }
 
   // This gets all the available books
@@ -184,6 +210,10 @@ export const useUserStore = defineStore('user', () => {
     return userHash.value;
   }
 
+  const getUserEmail = () => {
+    return userEmail.value;
+  }
+
   // This gets the user borrowed books
   const getUserBorrowedBooks = () => {  
     const books = userBorrowedBooks.value.getItem('borrowedBooks');
@@ -201,6 +231,8 @@ export const useUserStore = defineStore('user', () => {
     getPdf,
     getAllAvailableBooks,
     getUserBorrowedBooks,
+    getUserEmail,
+    getUserInfo,
     borrowBook,
     userLogoutAction,
   };
