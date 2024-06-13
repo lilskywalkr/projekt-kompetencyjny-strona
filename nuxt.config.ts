@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   proxy: {
     options: [
         {
-          target: 'https://empathetic-panda-myq45y-dev-ed.my.salesforce.com/services',
+          target: process.env.NUXT_SALSEFORCE_SERVER_URL,
           changeOrigin: true,
           pathRewrite: {
             '^/api/auth': '/oauth2/token',

@@ -2,10 +2,14 @@ import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', () => {
 
-  const userHash = useCookie('HASH', {maxAge: 7200}); // This is the user hash
+  const expiryDate = new Date();
+  expiryDate.setTime(expiryDate.getTime() + (2 * 60 * 60 * 1000)); // This is the expiry date for the access token
+
+  const accessToken = useCookie('TOKEN', {expires: expiryDate})  // This is the access token
+
+  const userHash = useCookie('HASH'); // This is the user hash
   const userLoggedIn = useCookie('IS_LOGGED_IN');  // This is the user logged in status
   const userEmail = useCookie('EMAIL');  // This is the user email
-  const accessToken = useCookie('TOKEN')  // This is the access token
   const userBorrowedBooks = ref(localStorage);  // This is the user borrowed books
 
   const clientId = import.meta.env.VITE_SALSEFORCE_CLIENT_ID; // This is the client id
@@ -29,16 +33,20 @@ export const useUserStore = defineStore('user', () => {
         server: true,
       });
       
-      const text = await response.text();
-      const json = JSON.parse(text);
+      if (response) {
+        const text = await response.text();
+        const json = JSON.parse(text);
 
-      userLoggedIn.value = JSON.stringify(true);
-      userHash.value = hash;
-      userEmail.value = email;
+        userLoggedIn.value = JSON.stringify(true);
+        userHash.value = hash;
+        userEmail.value = email;
 
-      console.log(json);
-      
-      userBorrowedBooks.value.setItem('borrowedBooks', JSON.stringify(json));
+        console.log(json);
+        
+        userBorrowedBooks.value.setItem('borrowedBooks', JSON.stringify(json));
+      } else {
+        throw new Error('Failed to login');
+      }
     } catch (error) {
       console.error(error);
     }
