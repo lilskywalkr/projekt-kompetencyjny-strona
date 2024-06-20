@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 
 const props = defineProps(['path', 'url']);
 const viewer = ref(null);
+const useUser = useUserStore();
 
 onMounted(() => {
   if (process.client) {
@@ -23,11 +24,11 @@ onMounted(() => {
         documentViewer.setWatermark({
           // Draw diagonal watermark in middle of the document
           diagonal: {
-            fontSize: 25, // or even smaller size
+            fontSize: 30, // or even smaller size
             fontFamily: 'sans-serif',
             color: 'red',
             opacity: 50, // from 0 to 100
-            text: 'Watermark'
+            text: useUser.getUserEmail(),
           },
         });
       });
