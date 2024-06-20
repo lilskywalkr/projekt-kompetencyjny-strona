@@ -4,15 +4,8 @@
     // Importing the useUserStore function from the store
     const useUser = useUserStore();
     const emits = defineEmits(['close']);   // Define emits for closing the modal
-    const visiblePassword = ref(false); // Variable to show the password
 
     const userInfo = ref(null); // Variable to store the user info
-
-    // Function to show the password
-    const showPassword = () => {
-        visiblePassword.value = !visiblePassword.value;
-    }
-
 
     onMounted(async () => {
         userInfo.value = await useUser.getUserInfo();   // Get the user info
