@@ -176,7 +176,7 @@
                             </template>
 
                             <p :style="{color: '#B23B3B'}"><b>{{ book?.dateDue }}</b></p>
-                            <input class="book-read" type="button" value="Read" @click="async () => {readTheBook(book?.itemId)}">
+                            <input class="book-read" type="button" value="Read" @click="async () => {readTheBook((book?.itemId ? book.itemId : book.bookId))}">
                         </div>
                     </div>
                     <img :src="`data:image/png;base64,${book.cover}`" :alt="book.title">

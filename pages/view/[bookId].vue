@@ -14,7 +14,7 @@
 
     onMounted(async () => {
         pdfUrl.value = await useUser.getPdf(route.params?.bookId); 
-        useUser.getUserBorrowedBooks().find(book => book.itemId === route.params?.bookId) ? borrowedBookExists.value = true : borrowedBookExists.value = false;
+        useUser.getUserBorrowedBooks().find(book => (book?.itemId ? book.itemId : book.bookId) === route.params?.bookId) ? borrowedBookExists.value = true : borrowedBookExists.value = false;
     });
 </script>
 
