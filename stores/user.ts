@@ -124,6 +124,15 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  // This sets the user borrowed books
+  const addUserBorrowedBook = (book: object) => {
+    const books: object[] = getUserBorrowedBooks();
+
+    books.push(book);
+
+    userBorrowedBooks.value.setItem('borrowedBooks', JSON.stringify(books));
+  }
+
   // This gets the PDF file from the server and returns the URL to the PDF
   async function getPdf(pdfId: string) {
     try {
@@ -243,5 +252,6 @@ export const useUserStore = defineStore('user', () => {
     getUserInfo,
     borrowBook,
     userLogoutAction,
+    addUserBorrowedBook,
   };
 });

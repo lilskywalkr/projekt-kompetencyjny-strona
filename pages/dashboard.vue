@@ -91,7 +91,7 @@
         }
 
         await useUser.borrowBook(bookId);
-
+        useUser.addUserBorrowedBook(availableBooks.value.find(book => book.bookId === bookId)); // zmienic na bookId gdy kuba zrobi zmiany
     }
 
     // Function for signing out
@@ -143,7 +143,7 @@
                             <h3 class="book-title">{{ book?.title }}</h3>
                             <p class="book-author">{{ book?.authors }}</p>
                             <p class="book-desc">{{ book?.Description }}</p>
-                            <input class="book-borrow" type="button" value="Borrow" @click="async () => {await borrowTheBook(book?.id)}">
+                            <input class="book-borrow" type="button" value="Borrow" @click="async () => {await borrowTheBook(book?.bookId)}">
                         </div>
                     </div>
                     <img class="availabe-book-cover" :src="`data:image/jpen;base64,${book?.cover}`" :alt="book.title">
@@ -167,7 +167,14 @@
                     <div class="borrowed-book-info">
                         <div>
                             <h3 class="book-title">{{ book?.title }}</h3>
-                            <p class="book-author" v-for="author in book?.authors">{{ author }}</p>
+
+                            <template v-if="Array.isArray(book?.authors)">
+                                <p class="book-author" v-for="author in book?.authors">{{ author }}</p>
+                            </template>
+                            <template v-else>
+                                <p class="book-author">{{ book?.authors }}</p>
+                            </template>
+
                             <p :style="{color: '#B23B3B'}"><b>{{ book?.dateDue }}</b></p>
                             <input class="book-read" type="button" value="Read" @click="async () => {readTheBook(book?.itemId)}">
                         </div>
