@@ -11,10 +11,26 @@
 
     const email = ref(null);
     const password = ref(null);
+    const errorMessage = ref(null);
+
+    // Function for login form validation
+    function validateForm() {
+        if (!email.value || !password.value) {
+            errorMessage.value = 'Invalid or missing credentials. Please try again.';
+            return false;
+        }
+
+        return true;
+    }
 
     // Function to login the user
     async function login(e) {
         e.preventDefault();
+
+        // If the form is not valid, return
+        if (!validateForm()) {
+            return;
+        }
         
         const hashedPassword = await hashing(email.value + password.value);
         await useUser.userLoginAction(hashedPassword, email.value);
@@ -49,6 +65,10 @@
                     <div class="form_block">
                         <label>Password*</label><br>
                         <input v-model="password" type="password" placeholder="Enter your password">
+                    </div>
+
+                    <div class="form_block" v-if="errorMessage">
+                        <p class="error_message">{{ errorMessage }}</p>
                     </div>
 
                     <button @click="login">Log in</button>
@@ -122,6 +142,12 @@
                             border-radius: 6px;
                         }
 
+                        .error_message {
+                            color: var(--b-red);
+                            font-size: 17px;
+                            font-weight: 700;
+                        }
+
                         .sign_in {
                             font-weight: 400;
                             color: var(--b-gray);
@@ -144,6 +170,10 @@
                         background: var(--b-black);
                         border-radius: 6px;
                         cursor: pointer;
+
+                        &:active {
+                            background: var(--b-blackish);
+                        }
                     }
                 }
             }

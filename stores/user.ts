@@ -56,6 +56,7 @@ export const useUserStore = defineStore('user', () => {
   const userLogoutAction = () => {
     userLoggedIn.value = null;
     userHash.value = null;
+    userEmail.value = null;
     userBorrowedBooks.value.removeItem('borrowedBooks');
   }
 

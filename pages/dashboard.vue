@@ -225,6 +225,10 @@
                     display: flex;
                     place-items: center;
                     gap: 0.5em;
+
+                    &:active {
+                        background-color: var(--b-blackish);
+                    }
                 }
 
                 select {
